@@ -1,30 +1,50 @@
 const questions = [
     {
-        question:"me is who?",
+        question:"Which of the following is the Grass/Poison-type starter Pokémon originating from the Kanto region?",
         answers: [
-            {text: "dhrit", correct: true},
-            {text: "shanu", correct: false},
-            {text: "manu", correct: false},
-            {text: "tanu", correct: false},
+            {text: "Chikorita", correct: false},
+            {text: "Treecko", correct: false},
+            {text: "Bulbasaur", correct: true},
+            {text: "Turtwig", correct: false},
         ]
     },
     {
-        question:"you is who?",
+        question:"Which Pokémon type is completely immune to Ghost-type attacks?",
         answers: [
-            {text: "user", correct: true},
-            {text: "shanu", correct: false},
-            {text: "manu", correct: false},
-            {text: "tanu", correct: false},
+            {text: "Steel", correct: false},
+            {text: "Dark", correct: false},
+            {text: "Fairy", correct: false},
+            {text: "Normal", correct: true},
         ]
 
     },
     {
-        question:"how is anime popular?",
+        question:"How does Eevee evolve into Sylveon in the main series Pokémon games?",
         answers: [
-            {text: "its engaging", correct: true},
-            {text: "its shit", correct: false},
-            {text: "not popular", correct: false},
-            {text: "idk", correct: false},
+            {text: "Leveling up knowing a fairy-type move with high affection/friendship", correct: true},
+            {text: "Exposing it to a shiny stone at night", correct: false},
+            {text: "Leveling up next to mossy rock", correct: false},
+            {text: "Trading it while holding a fairy feather", correct: false},
+        ]
+
+    },
+    {
+        question:"According to Johto region lore, the three legendary beasts—Raikou, Entei, and Suicune—were resurrected inside which landmark after it burned down?",
+        answers: [
+            {text: "Bell tower", correct: false},
+            {text: "Sprout tower", correct: false},
+            {text: "Brass tower", correct: true},
+            {text: "Silver tower", correct: false},
+        ]
+
+    },
+    {
+        question:"Which Ability causes Ground-type moves to have no effect on the Pokémon possessing it?",
+        answers: [
+            {text: "Sand Veil", correct: false},
+            {text: "Levitate", correct: true},
+            {text: "Earth Eater", correct: false},
+            {text: "Air Lock", correct: false},
         ]
 
     }
@@ -77,9 +97,42 @@ function selectAnswer(e){
     const isCorrect = selectedBtn.dataset.correct === "true";
     if(isCorrect){
         selectedBtn.classList.add("correct");
+        score++;
     }else{
         selectedBtn.classList.add("incorrect");
     }
+    Array.from(answerButtons.children).forEach(button => {
+        if(button.dataset.correct === "true"){
+            button.classList.add("correct");
+        }
+        button.disabled = true;
+    });
+    nextButton.style.display = "block";
+    
 }
+
+function showScore(){
+    resetState();
+    questionElement.innerHTML = `You scored ${score} out of ${questions.length}!`;
+    nextButton.innerHTML = "Play Again";
+    nextButton.style.display = "block";
+}
+
+function handleNextButton(){
+    currentQuestionIndex++;
+    if(currentQuestionIndex < questions.length){
+        showQuestion();
+    }else{
+        showScore();
+    }
+}
+
+nextButton.addEventListener("click", () => {
+    if (currentQuestionIndex < questions.length){
+        handleNextButton();
+    }else{
+        startQuiz();
+    }
+});
 
 startQuiz();
